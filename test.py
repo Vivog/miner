@@ -12,18 +12,29 @@ class GamePole:
         self.M = M
         self.pole = []
         self.init()
+        self.var = range(0, self.N * self.N)
 
     def mines_pos(self):
-        var = range(0, self.N * self.N)
         mines_pos = []
         while len(mines_pos) < self.M:
-            mine = random.choice(var)
+            mine = random.choice(self.var)
             if mine not in mines_pos:
                 mines_pos.append(mine)
             else:
                 continue
         print(mines_pos)
         return mines_pos
+
+    def around_mines(self):
+        pos = 0
+        mines_pos = self.mines_pos()
+        pole = []
+        for i in self.var:
+            if pos in mines_pos:
+                pole.append(Cell(0, True))
+            else:
+                pole.append(Cell(0, False))
+
 
     def init(self):
         pos = 0
@@ -38,27 +49,7 @@ class GamePole:
                         self.pole[cell].append(Cell(0, False))
                     pos += 1
         print(self.pole)
-        for cell in self.pole:
-            for elem in range(0, len(cell)):
-                if cell[elem].mine == False:
-                    if hasattr(cell[elem - 1]) and cell[elem - 1].mine == True:
-                        cell[elem].around_mines += 1
-                    if cell[elem + 1] and cell[elem + 1].mine == True:
-                        cell[elem].around_mines += 1
-                    if cell[elem + (self.N - 1)] and cell[elem + (self.N - 1)].mine == True:
-                        cell[elem].around_mines += 1
-                    if cell[elem + (self.N)] and cell[elem + (self.N)].mine == True:
-                        cell[elem].around_mines += 1
-                    if cell[elem + (self.N + 1)] and cell[elem + (self.N + 1)].mine == True:
-                        cell[elem].around_mines += 1
-                    if cell[elem - (self.N - 1)] and cell[elem + (self.N - 1)].mine == True:
-                        cell[elem].around_mines += 1
-                    if cell[elem - (self.N)] and cell[elem + (self.N)].mine == True:
-                        cell[elem].around_mines += 1
-                    if cell[elem - (self.N + 1)] and cell[elem + (self.N + 1)].mine == True:
-                        cell[elem].around_mines += 1
-                else:
-                    continue
+
 
 
 
@@ -74,5 +65,4 @@ class GamePole:
 
 pole_game = GamePole(10, 12)
 pole_game.show()
-hasattr()
 
